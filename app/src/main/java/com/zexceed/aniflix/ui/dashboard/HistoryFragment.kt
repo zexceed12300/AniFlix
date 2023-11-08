@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.zexceed.aniflix.databinding.FragmentHistoryBinding
+import com.zexceed.aniflix.models.remote.response.home.Complete
+import com.zexceed.aniflix.models.remote.response.home.OnGoing
+import com.zexceed.aniflix.respository.Resources
 
 class HistoryFragment : Fragment() {
 
@@ -16,6 +18,7 @@ class HistoryFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,8 +29,12 @@ class HistoryFragment : Fragment() {
             ViewModelProvider(this).get(HistoryViewModel::class.java)
 
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        return root
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 
     override fun onDestroyView() {

@@ -1,13 +1,22 @@
 package com.zexceed.aniflix.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import com.zexceed.aniflix.HomeActivity
+import com.zexceed.aniflix.adapter.OngoingAdapter
 import com.zexceed.aniflix.databinding.FragmentHomeBinding
+import com.zexceed.aniflix.models.remote.response.home.Complete
+import com.zexceed.aniflix.models.remote.response.home.OnGoing
+import com.zexceed.aniflix.respository.Resources
+import com.zexceed.aniflix.utils.Constants.TAG
+import com.zexceed.aniflix.utils.ViewModelFactory
 
 class HomeFragment : Fragment() {
 
@@ -16,18 +25,66 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var viewModel: HomeViewModel
+    private lateinit var ongoingAdapter: OngoingAdapter
+
+    private var listOngoing: List<OnGoing> = listOf()
+    private var listCompleted: List<Complete> = listOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        return root
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel = obtainViewModel(requireActivity())
+
+        binding.apply {
+
+            ongoingAdapter = OngoingAdapter()
+
+            setList()
+        }
+    }
+
+    private fun setList() {
+        viewModel.home.observe(viewLifecycleOwner) { result ->
+            when(result) {
+                is Resources.Loading -> {
+                    binding.progressBar.isVisible = true
+                }
+
+                is Resources.Success -> {
+                    binding.progressBar.isVisible = false
+                    listOngoing = result.data.home.on_going
+                    listCompleted = result.data.home.complete
+
+                    Log.d(TAG, "setList:::::::::: ${result.data.home}")
+
+                    ongoingAdapter.submitList(listOngoing)
+                    binding.rvOngoing.apply {
+                        adapter = ongoingAdapter
+                        setHasFixedSize(true)
+                    }
+                }
+
+                is Resources.Error -> {
+                    binding.progressBar.isVisible = false
+                    Log.d(TAG, "setList::::::: ${result.error}")
+                }
+            }
+        }
+    }
+
+    private fun obtainViewModel(homeActivity: FragmentActivity): HomeViewModel {
+        val factory = ViewModelFactory.getInstance(homeActivity.application)
+        return ViewModelProvider(homeActivity, factory)[HomeViewModel::class.java]
     }
 
     override fun onDestroyView() {

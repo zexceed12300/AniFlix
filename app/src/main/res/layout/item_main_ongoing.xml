@@ -20,7 +20,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/img_thumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -34,6 +34,21 @@
                 android:background="@drawable/thumbnail_gradient" />
 
             <TextView
+                android:id="@+id/tv_day_updated"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tv_title"
+                app:layout_constraintEnd_toEndOf="@+id/tv_uploaded_on"
+                app:layout_constraintStart_toStartOf="@+id/tv_uploaded_on"
+                tools:text="@tools:sample/date/day_of_week" />
+
+            <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
@@ -42,13 +57,13 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/textView2"
-                app:layout_constraintEnd_toEndOf="@+id/textView2"
-                app:layout_constraintStart_toStartOf="@+id/textView2"
+                app:layout_constraintBottom_toTopOf="@+id/tv_uploaded_on"
+                app:layout_constraintEnd_toEndOf="@+id/tv_uploaded_on"
+                app:layout_constraintStart_toStartOf="@+id/tv_uploaded_on"
                 tools:text="@tools:sample/lorem/random" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tv_uploaded_on"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
