@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zexceed.aniflix.respository.AniflixRepository
 import com.zexceed.aniflix.ui.home.HomeViewModel
+import com.zexceed.aniflix.ui.search.SearchViewModel
 import java.lang.IllegalArgumentException
 
 class ViewModelFactory private constructor(
@@ -34,6 +35,9 @@ class ViewModelFactory private constructor(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             return HomeViewModel(application) as T
+        }
+        if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
+            return SearchViewModel(application) as T
         }
         throw IllegalArgumentException("ViewModel class:: ${modelClass.name}")
     }
