@@ -1,5 +1,6 @@
 package com.zexceed.aniflix.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,12 +10,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import com.zexceed.aniflix.HomeActivity
+import com.zexceed.aniflix.adapter.CompleteAdapter
 import com.zexceed.aniflix.adapter.OngoingAdapter
 import com.zexceed.aniflix.databinding.FragmentHomeBinding
 import com.zexceed.aniflix.models.remote.response.home.Complete
 import com.zexceed.aniflix.models.remote.response.home.OnGoing
-import com.zexceed.aniflix.respository.Resources
+import com.zexceed.aniflix.respository.Resource
+import com.zexceed.aniflix.ui.search.SearchActivity
 import com.zexceed.aniflix.utils.Constants.TAG
 import com.zexceed.aniflix.utils.ViewModelFactory
 
@@ -27,6 +29,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: HomeViewModel
     private lateinit var ongoingAdapter: OngoingAdapter
+    private lateinit var completeAdapter: CompleteAdapter
 
     private var listOngoing: List<OnGoing> = listOf()
     private var listCompleted: List<Complete> = listOf()
@@ -48,33 +51,42 @@ class HomeFragment : Fragment() {
         binding.apply {
 
             ongoingAdapter = OngoingAdapter()
+            completeAdapter = CompleteAdapter()
 
             setList()
+
+            searchBar.setOnClickListener {
+                val intent = Intent(requireActivity(), SearchActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
     private fun setList() {
         viewModel.home.observe(viewLifecycleOwner) { result ->
             when(result) {
-                is Resources.Loading -> {
+                is Resource.Loading -> {
                     binding.progressBar.isVisible = true
                 }
 
-                is Resources.Success -> {
+                is Resource.Success -> {
                     binding.progressBar.isVisible = false
                     listOngoing = result.data.home.on_going
                     listCompleted = result.data.home.complete
-
-                    Log.d(TAG, "setList:::::::::: ${result.data.home}")
 
                     ongoingAdapter.submitList(listOngoing)
                     binding.rvOngoing.apply {
                         adapter = ongoingAdapter
                         setHasFixedSize(true)
                     }
+                    completeAdapter.submitList(listCompleted)
+                    binding.rvComplete.apply {
+                        adapter = completeAdapter
+                        setHasFixedSize(true)
+                    }
                 }
 
-                is Resources.Error -> {
+                is Resource.Error -> {
                     binding.progressBar.isVisible = false
                     Log.d(TAG, "setList::::::: ${result.error}")
                 }

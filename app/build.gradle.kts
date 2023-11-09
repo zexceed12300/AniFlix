@@ -9,14 +9,14 @@ android {
 
     defaultConfig {
         applicationId = "com.zexceed.aniflix"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:3000/api/\"")
+        buildConfigField("String", "API_BASE_URL", "\"http://192.168.49.167:3000/api/\"")
     }
 
     buildTypes {
