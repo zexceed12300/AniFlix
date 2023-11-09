@@ -1,4 +1,4 @@
-package com.zexceed.aniflix.ui.dashboard
+package com.zexceed.aniflix.ui.history
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,9 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.zexceed.aniflix.databinding.FragmentHistoryBinding
-import com.zexceed.aniflix.models.remote.response.home.Complete
-import com.zexceed.aniflix.models.remote.response.home.OnGoing
-import com.zexceed.aniflix.respository.Resources
 
 class HistoryFragment : Fragment() {
 
@@ -25,9 +22,6 @@ class HistoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(HistoryViewModel::class.java)
-
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root
     }

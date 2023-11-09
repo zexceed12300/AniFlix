@@ -1,4 +1,4 @@
-package com.zexceed.aniflix.ui.notifications
+package com.zexceed.aniflix.ui.animelist
 
 import android.os.Bundle
 import android.view.LayoutInflater

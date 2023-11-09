@@ -1,4 +1,4 @@
-package com.zexceed.aniflix.ui.notifications
+package com.zexceed.aniflix.ui.animelist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
