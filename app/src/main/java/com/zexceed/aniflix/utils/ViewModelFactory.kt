@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zexceed.aniflix.respository.AniflixRepository
 import com.zexceed.aniflix.ui.home.HomeViewModel
+import com.zexceed.aniflix.ui.home.complete.CompleteViewModel
+import com.zexceed.aniflix.ui.home.ongoing.OngoingFragment
+import com.zexceed.aniflix.ui.home.ongoing.OngoingViewModel
 import com.zexceed.aniflix.ui.search.SearchViewModel
 import java.lang.IllegalArgumentException
 
@@ -38,6 +41,12 @@ class ViewModelFactory private constructor(
         }
         if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
             return SearchViewModel(application) as T
+        }
+        if (modelClass.isAssignableFrom(OngoingViewModel::class.java)) {
+            return OngoingViewModel(application) as T
+        }
+        if (modelClass.isAssignableFrom(CompleteViewModel::class.java)) {
+            return CompleteViewModel(application) as T
         }
         throw IllegalArgumentException("ViewModel class:: ${modelClass.name}")
     }

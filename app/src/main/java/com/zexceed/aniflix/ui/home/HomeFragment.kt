@@ -10,8 +10,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import com.zexceed.aniflix.adapter.CompleteAdapter
-import com.zexceed.aniflix.adapter.OngoingAdapter
+import androidx.navigation.fragment.findNavController
+import com.zexceed.aniflix.R
+import com.zexceed.aniflix.adapter.HomeCompleteAdapter
+import com.zexceed.aniflix.adapter.HomeOngoingAdapter
 import com.zexceed.aniflix.databinding.FragmentHomeBinding
 import com.zexceed.aniflix.models.remote.response.home.Complete
 import com.zexceed.aniflix.models.remote.response.home.OnGoing
@@ -28,8 +30,8 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var viewModel: HomeViewModel
-    private lateinit var ongoingAdapter: OngoingAdapter
-    private lateinit var completeAdapter: CompleteAdapter
+    private lateinit var ongoingAdapter: HomeOngoingAdapter
+    private lateinit var completeAdapter: HomeCompleteAdapter
 
     private var listOngoing: List<OnGoing> = listOf()
     private var listCompleted: List<Complete> = listOf()
@@ -50,14 +52,22 @@ class HomeFragment : Fragment() {
 
         binding.apply {
 
-            ongoingAdapter = OngoingAdapter()
-            completeAdapter = CompleteAdapter()
+            ongoingAdapter = HomeOngoingAdapter()
+            completeAdapter = HomeCompleteAdapter()
 
             setList()
 
             searchBar.setOnClickListener {
                 val intent = Intent(requireActivity(), SearchActivity::class.java)
                 startActivity(intent)
+            }
+
+            btnAllOngoing.setOnClickListener {
+                findNavController().navigate(R.id.action_navigation_home_to_ongoingFragment2)
+            }
+
+            btnAllComplete.setOnClickListener {
+                findNavController().navigate(R.id.action_navigation_home_to_completeFragment)
             }
         }
     }

@@ -39,7 +39,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:listitem="@layout/item_main_ongoing" />
+        tools:listitem="@layout/item_ongoing_horizontal" />
 
     <TextView
         android:id="@+id/textView3"
@@ -62,7 +62,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:listitem="@layout/item_main_ongoing" />
+        tools:listitem="@layout/item_ongoing_horizontal" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

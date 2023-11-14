@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.zexceed.aniflix.databinding.ItemOngoingVerticalBinding
-import com.zexceed.aniflix.models.remote.response.ongoing.Anime
+import com.zexceed.aniflix.databinding.ItemCompleteHorizontalBinding
+import com.zexceed.aniflix.models.remote.response.home.Complete
 import com.zexceed.aniflix.utils.Constants.createImageProgress
 
-class OngoingAdapter: ListAdapter<Anime, OngoingAdapter.ViewHolder>(DIFF_CALLBACK) {
+class HomeCompleteAdapter: ListAdapter<Complete, HomeCompleteAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemOngoingVerticalBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemCompleteHorizontalBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -22,12 +22,12 @@ class OngoingAdapter: ListAdapter<Anime, OngoingAdapter.ViewHolder>(DIFF_CALLBAC
         holder.bind(getItem(position))
     }
 
-    inner class ViewHolder(private val binding: ItemOngoingVerticalBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Anime) {
+    inner class ViewHolder(private val binding: ItemCompleteHorizontalBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: Complete) {
             binding.apply {
-                tvDayUpdated.text = data.day_updated
+                tvRating.text = data.score.toString()
                 tvTitle.text = data.title
-                tvUploadedOn.text = data.uploaded_on
+                tvEpisode.text = data.episode
                 Glide.with(itemView.context)
                     .load(data.thumb)
                     .placeholder(itemView.context.createImageProgress())
@@ -38,13 +38,13 @@ class OngoingAdapter: ListAdapter<Anime, OngoingAdapter.ViewHolder>(DIFF_CALLBAC
     }
 
     companion object {
-        val DIFF_CALLBACK: DiffUtil.ItemCallback<Anime> = object: DiffUtil.ItemCallback<Anime>() {
-            override fun areItemsTheSame(oldItem: Anime, newItem: Anime): Boolean {
-                return oldItem.id == newItem.id
+        val DIFF_CALLBACK: DiffUtil.ItemCallback<Complete> = object: DiffUtil.ItemCallback<Complete>() {
+            override fun areItemsTheSame(oldItem: Complete, newItem: Complete): Boolean {
+                return newItem.id == oldItem.id
             }
 
             @SuppressLint("DiffUtilEquals")
-            override fun areContentsTheSame(oldItem: Anime, newItem: Anime): Boolean {
+            override fun areContentsTheSame(oldItem: Complete, newItem: Complete): Boolean {
                 return oldItem == newItem
             }
 

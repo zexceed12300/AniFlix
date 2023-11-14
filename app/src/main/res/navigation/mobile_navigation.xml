@@ -9,7 +9,14 @@
         android:id="@+id/navigation_home"
         android:name="com.zexceed.aniflix.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_ongoingFragment2"
+            app:destination="@id/ongoingFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_completeFragment"
+            app:destination="@id/completeFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_history"
@@ -28,5 +35,23 @@
         android:name="com.zexceed.aniflix.ui.animelist.AnimeListFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/ongoingFragment"
+        android:name="com.zexceed.aniflix.ui.home.ongoing.OngoingFragment"
+        android:label="fragment_ongoing"
+        tools:layout="@layout/fragment_ongoing" >
+        <action
+            android:id="@+id/action_ongoingFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/completeFragment"
+        android:name="com.zexceed.aniflix.ui.home.complete.CompleteFragment"
+        android:label="fragment_complete"
+        tools:layout="@layout/fragment_complete" >
+        <action
+            android:id="@+id/action_completeFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 
 </navigation>

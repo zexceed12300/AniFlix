@@ -25,4 +25,19 @@ class AniflixRepository(application: Application) {
         emit(Resource.Error(it.message ?: ""))
     }.flowOn(Dispatchers.IO)
 
+    fun getOngoing(page: Int) = flow {
+        emit(Resource.Loading())
+        val response = ApiConfig(API_BASE_URL).apiServices.getOngoing(page)
+        emit(Resource.Success(response))
+    }.catch {
+        emit(Resource.Error(it.message ?: ""))
+    }.flowOn(Dispatchers.IO)
+
+    fun getComplete(page: Int) = flow {
+        emit(Resource.Loading())
+        val response = ApiConfig(API_BASE_URL).apiServices.getComplete(page)
+        emit(Resource.Success(response))
+    }.catch {
+        emit(Resource.Error(it.message ?: ""))
+    }.flowOn(Dispatchers.IO)
 }
