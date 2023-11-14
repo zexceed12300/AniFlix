@@ -37,6 +37,8 @@ class SearchActivity : AppCompatActivity() {
                 finish()
             }
 
+            etSearch.requestFocus()
+
             etSearch.addTextChangedListener {
                 viewModel.getSearchResult(etSearch.text.toString().trim())
                 setList()
