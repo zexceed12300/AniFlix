@@ -1,6 +1,7 @@
 package com.zexceed.aniflix.adapter
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.zexceed.aniflix.databinding.ItemOngoingVerticalBinding
 import com.zexceed.aniflix.models.remote.response.ongoing.Anime
+import com.zexceed.aniflix.ui.animedetail.AnimeDetailActivity
 import com.zexceed.aniflix.utils.Constants.createImageProgress
 
 class OngoingAdapter: ListAdapter<Anime, OngoingAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -33,6 +35,12 @@ class OngoingAdapter: ListAdapter<Anime, OngoingAdapter.ViewHolder>(DIFF_CALLBAC
                     .placeholder(itemView.context.createImageProgress())
                     .error(android.R.color.darker_gray)
                     .into(imgThumbnail)
+
+                itemView.setOnClickListener {
+                    val intent = Intent(itemView.context, AnimeDetailActivity::class.java)
+                    intent.putExtra(AnimeDetailActivity.ANIME_DETAIL_ID, data.id)
+                    itemView.context.startActivity(intent)
+                }
             }
         }
     }

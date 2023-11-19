@@ -8,4 +8,6 @@
 
     <color name="base">#1E1C22</color>
     <color name="accent">#FFE70E</color>
+
+    <color name="transparent">#FFFFFF</color>
 </resources>

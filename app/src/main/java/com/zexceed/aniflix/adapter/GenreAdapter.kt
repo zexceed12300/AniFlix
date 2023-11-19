@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.zexceed.aniflix.databinding.ItemGenreBinding
-import com.zexceed.aniflix.models.remote.response.search.Genre
+import com.zexceed.aniflix.models.remote.response.Genre
 
 class GenreAdapter: ListAdapter<Genre, GenreAdapter.ViewHolder>(DIFF_CALLBACK) {
 

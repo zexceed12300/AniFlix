@@ -40,4 +40,20 @@ class AniflixRepository(application: Application) {
     }.catch {
         emit(Resource.Error(it.message ?: ""))
     }.flowOn(Dispatchers.IO)
+
+    fun getAnime(id: String) = flow {
+        emit(Resource.Loading())
+        val response = ApiConfig(API_BASE_URL).apiServices.getAnime(id)
+        emit(Resource.Success(response))
+    }.catch {
+        emit(Resource.Error(it.message ?: ""))
+    }.flowOn(Dispatchers.IO)
+
+    fun getEpisode(id: String) = flow {
+        emit(Resource.Loading())
+        val response = ApiConfig(API_BASE_URL).apiServices.getEpisode(id)
+        emit(Resource.Success(response))
+    }.catch {
+        emit(Resource.Error(it.message ?: ""))
+    }.flowOn(Dispatchers.IO)
 }

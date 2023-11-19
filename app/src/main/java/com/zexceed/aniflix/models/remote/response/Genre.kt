@@ -1,4 +1,4 @@
-package com.zexceed.aniflix.models.remote.response.search
+package com.zexceed.aniflix.models.remote.response
 
 data class Genre(
     val genre_id: String,

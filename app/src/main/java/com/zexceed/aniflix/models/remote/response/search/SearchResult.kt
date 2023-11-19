@@ -1,5 +1,7 @@
 package com.zexceed.aniflix.models.remote.response.search
 
+import com.zexceed.aniflix.models.remote.response.Genre
+
 data class SearchResult(
     val genre_list: List<Genre>,
     val id: String,

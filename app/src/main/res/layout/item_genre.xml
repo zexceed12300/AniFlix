@@ -10,7 +10,6 @@
         android:id="@+id/chip"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:background="?attr/colorSecondary"
         app:chipStrokeWidth="0dp"
         tools:text="Lorem" />
 
