@@ -115,4 +115,23 @@
         app:layout_constraintTop_toBottomOf="@+id/rv_genre"
         tools:text="@tools:sample/lorem/random" />
 
+    <CheckBox
+        android:id="@+id/check_mylist"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:button="@drawable/selector_animelist_item"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:text="Simpan"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

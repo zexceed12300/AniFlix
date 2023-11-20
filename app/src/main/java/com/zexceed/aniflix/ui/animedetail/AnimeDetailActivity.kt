@@ -4,19 +4,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.webkit.WebViewClient
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.zexceed.aniflix.R
+import androidx.lifecycle.lifecycleScope
 import com.zexceed.aniflix.adapter.EpisodeAdapter
 import com.zexceed.aniflix.adapter.GenreAdapter
 import com.zexceed.aniflix.databinding.ActivityAnimeDetailBinding
+import com.zexceed.aniflix.models.local.room.MylistEntity
 import com.zexceed.aniflix.models.remote.response.Episode
+import com.zexceed.aniflix.models.remote.response.anime.AnimeResponse
 import com.zexceed.aniflix.respository.Resource
-import com.zexceed.aniflix.ui.home.complete.CompleteViewModel
-import com.zexceed.aniflix.utils.Constants
 import com.zexceed.aniflix.utils.Constants.TAG
 import com.zexceed.aniflix.utils.ViewModelFactory
+import kotlinx.coroutines.launch
 import java.util.Collections
 
 class AnimeDetailActivity : AppCompatActivity() {
@@ -41,7 +40,7 @@ class AnimeDetailActivity : AppCompatActivity() {
                 onClick = { data ->
                     tvTitle.text = data.title
                     viewModel.getEpisode(data.id)
-                    setEpisodeView()
+                    setMediaPlayer()
                 }
             )
 
@@ -65,26 +64,20 @@ class AnimeDetailActivity : AppCompatActivity() {
                             tvRating.text = result.data.score.toString()
                         }
 
-                        val episode = result.data.episode_list
-                        Collections.reverse(episode)
-                        tvTitle.text = episode[0].title
+                        val listEpisode = result.data.episode_list
+                        Collections.reverse(listEpisode)
 
-                        viewModel.getEpisode(episode[0].id)
-                        setEpisodeView()
+                        tvTitle.text = listEpisode[0].title
 
-                        episodeAdapter.submitList(episode)
-                        rvEpisode.apply {
-                            adapter = episodeAdapter
-                            setHasFixedSize(true)
-                        }
+                        viewModel.getEpisode(listEpisode[0].id)
+                        setEpisodeList(listEpisode)
 
-                        genreAdapter.submitList(result.data.genre_list)
-                        Log.d(TAG, "setView: ${result.data.genre_list}")
-                        rvGenre.apply {
-                            adapter = genreAdapter
-                            setHasFixedSize(true)
-                        }
+                        setMediaPlayer()
+
+                        setGenreList(result)
                         tvSynopsis.text = result.data.synopsis
+
+                        setMyList(result)
                     }
                     is Resource.Error -> {
 
@@ -94,7 +87,56 @@ class AnimeDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setEpisodeView() {
+    private fun setMyList(result: Resource.Success<AnimeResponse>) {
+        binding.apply {
+            checkMylist.setOnCheckedChangeListener { checkbox, isChecked ->
+                if (isChecked) {
+                    lifecycleScope.launch {
+                        viewModel.storeMylist(
+                            anime = MylistEntity(
+                                animeId = result.data.anime_id,
+                                title = result.data.title,
+                                thumb = result.data.thumb
+                            )
+                        )
+                    }
+                } else {
+                    lifecycleScope.launch {
+                        viewModel.deleteMylist(result.data.anime_id)
+                    }
+                }
+            }
+            viewModel.getMylist(result.data.anime_id).observe(this@AnimeDetailActivity) { result ->
+                Log.d(TAG, "setMyList: $result")
+                if (result != null) {
+                    checkMylist.isChecked = true
+                }
+            }
+        }
+    }
+
+    private fun setEpisodeList(list: List<Episode>) {
+        binding.apply {
+            episodeAdapter.submitList(list)
+            rvEpisode.apply {
+                adapter = episodeAdapter
+                setHasFixedSize(true)
+            }
+        }
+    }
+
+    private fun setGenreList(result: Resource.Success<AnimeResponse>) {
+        binding.apply {
+            genreAdapter.submitList(result.data.genre_list)
+            Log.d(TAG, "setView: ${result.data.genre_list}")
+            rvGenre.apply {
+                adapter = genreAdapter
+                setHasFixedSize(true)
+            }
+        }
+    }
+
+    private fun setMediaPlayer() {
         binding.apply {
             viewModel.episode.observe(this@AnimeDetailActivity) { result ->
                 when(result) {

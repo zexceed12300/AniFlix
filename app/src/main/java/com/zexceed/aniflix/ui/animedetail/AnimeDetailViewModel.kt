@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import com.zexceed.aniflix.models.local.room.MylistEntity
 import com.zexceed.aniflix.models.remote.response.anime.AnimeResponse
 import com.zexceed.aniflix.models.remote.response.episode.EpisodeResponse
 import com.zexceed.aniflix.respository.AniflixRepository
@@ -22,7 +23,7 @@ class AnimeDetailViewModel(
     val episode get() = _episode
 
     init {
-        getAnime("Dawd")
+        getAnime("")
     }
 
     fun getAnime(id: String) {
@@ -31,6 +32,18 @@ class AnimeDetailViewModel(
 
     fun getEpisode(id: String) {
         _episode = mRepository.getEpisode(id).asLiveData()
+    }
+
+    fun getMylist(animeId: String) : LiveData<MylistEntity> {
+        return mRepository.getMylistById(animeId)
+    }
+
+    suspend fun storeMylist(anime: MylistEntity) {
+        mRepository.storeMylist(anime)
+    }
+
+    suspend fun deleteMylist(animeId: String) {
+        mRepository.deleteMyList(animeId)
     }
 
 }

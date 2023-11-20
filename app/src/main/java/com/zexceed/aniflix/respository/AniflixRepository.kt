@@ -1,14 +1,38 @@
 package com.zexceed.aniflix.respository
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import com.zexceed.aniflix.BuildConfig.API_BASE_URL
 import com.zexceed.aniflix.apiservices.ApiConfig
+import com.zexceed.aniflix.models.local.room.MylistDao
+import com.zexceed.aniflix.models.local.room.AniflixDatabase
+import com.zexceed.aniflix.models.local.room.MylistEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class AniflixRepository(application: Application) {
+
+    private val mMylistDao: MylistDao
+
+    init {
+        val db = AniflixDatabase.getDatabase(application)
+        mMylistDao = db.myListDao()
+    }
+
+    fun getMylist(): LiveData<List<MylistEntity>> = mMylistDao.getMyList()
+
+    fun getMylistById(animeId: String): LiveData<MylistEntity> = mMylistDao.getMyListById(animeId)
+
+    suspend fun storeMylist(anime: MylistEntity) {
+        mMylistDao.storeMyList(anime)
+    }
+
+    suspend fun deleteMyList(animeId: String) {
+        mMylistDao.deleteMyListById(animeId)
+    }
+
     fun getHome() = flow {
         emit(Resource.Loading())
         val response = ApiConfig(API_BASE_URL).apiServices.getHome()
