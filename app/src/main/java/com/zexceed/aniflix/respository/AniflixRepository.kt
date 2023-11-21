@@ -93,4 +93,12 @@ class AniflixRepository(application: Application) {
     }.catch {
         emit(Resource.Error(it.message ?: ""))
     }.flowOn(Dispatchers.IO)
+
+    fun getGenre() = flow {
+        emit(Resource.Loading())
+        val response = ApiConfig(API_BASE_URL).apiServices.getGenre()
+        emit(Resource.Success(response))
+    }.catch {
+        emit(Resource.Error(it.message ?: ""))
+    }.flowOn(Dispatchers.IO)
 }

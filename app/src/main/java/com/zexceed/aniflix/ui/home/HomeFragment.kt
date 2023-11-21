@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.zexceed.aniflix.R
+import com.zexceed.aniflix.adapter.GenreAdapter
 import com.zexceed.aniflix.adapter.HomeCompleteAdapter
 import com.zexceed.aniflix.adapter.HomeOngoingAdapter
 import com.zexceed.aniflix.databinding.FragmentHomeBinding
@@ -32,6 +33,7 @@ class HomeFragment : Fragment() {
     private lateinit var viewModel: HomeViewModel
     private lateinit var ongoingAdapter: HomeOngoingAdapter
     private lateinit var completeAdapter: HomeCompleteAdapter
+    private lateinit var genreAdapter: GenreAdapter
 
     private var listOngoing: List<OnGoing> = listOf()
     private var listCompleted: List<Complete> = listOf()
@@ -49,13 +51,15 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = obtainViewModel(requireActivity())
+        ongoingAdapter = HomeOngoingAdapter()
+        completeAdapter = HomeCompleteAdapter()
+        genreAdapter = GenreAdapter()
 
         binding.apply {
 
-            ongoingAdapter = HomeOngoingAdapter()
-            completeAdapter = HomeCompleteAdapter()
-
             setList()
+
+            setGenre()
 
             searchBar.setOnClickListener {
                 val intent = Intent(requireActivity(), SearchActivity::class.java)
@@ -68,6 +72,28 @@ class HomeFragment : Fragment() {
 
             btnAllComplete.setOnClickListener {
                 findNavController().navigate(R.id.action_navigation_home_to_completeFragment)
+            }
+        }
+    }
+
+    private fun setGenre() {
+        binding.apply {
+            viewModel.genre.observe(viewLifecycleOwner) { result ->
+                when(result) {
+                    is Resource.Loading -> {
+
+                    }
+                    is Resource.Success -> {
+                        genreAdapter.submitList(result.data.genreList)
+                        rvGenre.apply {
+                            adapter = genreAdapter
+                            setHasFixedSize(true)
+                        }
+                    }
+                    is Resource.Error -> {
+
+                    }
+                }
             }
         }
     }

@@ -3,6 +3,7 @@ package com.zexceed.aniflix.apiservices
 import com.zexceed.aniflix.models.remote.response.anime.AnimeResponse
 import com.zexceed.aniflix.models.remote.response.complete.CompleteResponse
 import com.zexceed.aniflix.models.remote.response.episode.EpisodeResponse
+import com.zexceed.aniflix.models.remote.response.genre.GenreResponse
 import com.zexceed.aniflix.models.remote.response.home.HomeResponse
 import com.zexceed.aniflix.models.remote.response.ongoing.OngoingResponse
 import com.zexceed.aniflix.models.remote.response.search.SearchResponse
@@ -37,4 +38,7 @@ interface ApiServices {
     suspend fun getEpisode(
         @Path("id") id: String
     ) : EpisodeResponse
+
+    @GET("genres")
+    suspend fun getGenre() : GenreResponse
 }
