@@ -6,13 +6,14 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [MylistEntity::class],
+    entities = [MylistEntity::class, HistoryEntity::class],
     version = 1,
     exportSchema = false
 )
 
 abstract class AniflixDatabase : RoomDatabase() {
     abstract fun myListDao(): MylistDao
+    abstract fun historyDao(): HistoryDao
 
     companion object {
         @Volatile

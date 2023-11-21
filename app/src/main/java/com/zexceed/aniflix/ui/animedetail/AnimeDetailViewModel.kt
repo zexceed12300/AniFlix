@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import com.zexceed.aniflix.models.local.room.HistoryEntity
 import com.zexceed.aniflix.models.local.room.MylistEntity
 import com.zexceed.aniflix.models.remote.response.anime.AnimeResponse
 import com.zexceed.aniflix.models.remote.response.episode.EpisodeResponse
@@ -44,6 +45,14 @@ class AnimeDetailViewModel(
 
     suspend fun deleteMylist(animeId: String) {
         mRepository.deleteMyList(animeId)
+    }
+
+
+    fun getHistoryById(animeId: String) : LiveData<HistoryEntity> {
+        return mRepository.getHistoryById(animeId)
+    }
+    suspend fun insertHistory(history: HistoryEntity) {
+        mRepository.insertHistory(history)
     }
 
 }

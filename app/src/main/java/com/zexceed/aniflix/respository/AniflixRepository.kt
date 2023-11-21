@@ -6,6 +6,8 @@ import com.zexceed.aniflix.BuildConfig.API_BASE_URL
 import com.zexceed.aniflix.apiservices.ApiConfig
 import com.zexceed.aniflix.models.local.room.MylistDao
 import com.zexceed.aniflix.models.local.room.AniflixDatabase
+import com.zexceed.aniflix.models.local.room.HistoryDao
+import com.zexceed.aniflix.models.local.room.HistoryEntity
 import com.zexceed.aniflix.models.local.room.MylistEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -15,10 +17,12 @@ import kotlinx.coroutines.flow.flowOn
 class AniflixRepository(application: Application) {
 
     private val mMylistDao: MylistDao
+    private val mHistoryDao: HistoryDao
 
     init {
         val db = AniflixDatabase.getDatabase(application)
         mMylistDao = db.myListDao()
+        mHistoryDao = db.historyDao()
     }
 
     fun getMylist(): LiveData<List<MylistEntity>> = mMylistDao.getMyList()
@@ -31,6 +35,15 @@ class AniflixRepository(application: Application) {
 
     suspend fun deleteMyList(animeId: String) {
         mMylistDao.deleteMyListById(animeId)
+    }
+
+    fun getAllHistory(): LiveData<List<HistoryEntity>> = mHistoryDao.getAllHistory()
+    fun getHistoryById(animeId: String): LiveData<HistoryEntity> = mHistoryDao.getHistoryById(animeId)
+    suspend fun insertHistory(history: HistoryEntity) {
+        mHistoryDao.insertHistory(history)
+    }
+    suspend fun deleteHistoryById(animeId: String) {
+        mHistoryDao.deleteHistoryById(animeId)
     }
 
     fun getHome() = flow {

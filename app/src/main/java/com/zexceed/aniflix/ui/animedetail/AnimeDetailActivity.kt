@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.zexceed.aniflix.adapter.EpisodeAdapter
 import com.zexceed.aniflix.adapter.GenreAdapter
 import com.zexceed.aniflix.databinding.ActivityAnimeDetailBinding
+import com.zexceed.aniflix.models.local.room.HistoryEntity
 import com.zexceed.aniflix.models.local.room.MylistEntity
 import com.zexceed.aniflix.models.remote.response.Episode
 import com.zexceed.aniflix.models.remote.response.anime.AnimeResponse
@@ -37,10 +38,16 @@ class AnimeDetailActivity : AppCompatActivity() {
         binding.apply {
 
             episodeAdapter = EpisodeAdapter(
-                onClick = { data ->
+                onClick = { data, position ->
                     tvTitle.text = data.title
                     viewModel.getEpisode(data.id)
                     setMediaPlayer()
+                    setHistory(
+                        intent.getStringExtra(ANIME_DETAIL_ID).toString(),
+                        null,
+                        null,
+                        position+1
+                    )
                 }
             )
 
@@ -74,6 +81,13 @@ class AnimeDetailActivity : AppCompatActivity() {
 
                         setMediaPlayer()
 
+                        setHistory(
+                            result.data.anime_id,
+                            result.data.title,
+                            result.data.thumb,
+                            1,
+                        )
+
                         setGenreList(result)
                         tvSynopsis.text = result.data.synopsis
 
@@ -82,6 +96,34 @@ class AnimeDetailActivity : AppCompatActivity() {
                     is Resource.Error -> {
 
                     }
+                }
+            }
+        }
+    }
+
+    private fun setHistory(animeId: String, title: String?, thumb: String?, episode: Int) {
+        viewModel.getHistoryById(animeId).observe(this@AnimeDetailActivity) { result ->
+            lifecycleScope.launch {
+                if (result != null && title.isNullOrEmpty() && thumb.isNullOrEmpty()) {
+                    viewModel.insertHistory(
+                        history = HistoryEntity(
+                            animeId = result.animeId,
+                            title = result.title,
+                            thumb = result.thumb,
+                            episode = episode,
+                            timestamp = System.currentTimeMillis()
+                        )
+                    )
+                } else if (!title.isNullOrEmpty() && !thumb.isNullOrEmpty()) {
+                    viewModel.insertHistory(
+                        history = HistoryEntity(
+                            animeId = animeId,
+                            title = title,
+                            thumb = thumb,
+                            episode = episode,
+                            timestamp = System.currentTimeMillis()
+                        )
+                    )
                 }
             }
         }

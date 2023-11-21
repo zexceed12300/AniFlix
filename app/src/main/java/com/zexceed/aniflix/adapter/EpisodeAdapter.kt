@@ -10,7 +10,7 @@ import com.zexceed.aniflix.databinding.ItemEpisodeBinding
 import com.zexceed.aniflix.models.remote.response.Episode
 
 class EpisodeAdapter(
-    private val onClick: (data: Episode) -> Unit
+    private val onClick: (data: Episode, position: Int) -> Unit
 ): ListAdapter<Episode, EpisodeAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,7 +27,7 @@ class EpisodeAdapter(
             binding.apply {
                 tvEpisode.text = (position+1).toString()
                 itemView.setOnClickListener {
-                    onClick(data)
+                    onClick(data, position)
                 }
             }
         }

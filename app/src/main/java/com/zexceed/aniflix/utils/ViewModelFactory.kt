@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.zexceed.aniflix.respository.AniflixRepository
 import com.zexceed.aniflix.ui.animedetail.AnimeDetailViewModel
 import com.zexceed.aniflix.ui.animelist.AnimeListViewModel
+import com.zexceed.aniflix.ui.history.HistoryViewModel
 import com.zexceed.aniflix.ui.home.HomeViewModel
 import com.zexceed.aniflix.ui.home.complete.CompleteViewModel
 import com.zexceed.aniflix.ui.home.ongoing.OngoingFragment
@@ -55,6 +56,9 @@ class ViewModelFactory private constructor(
         }
         if (modelClass.isAssignableFrom(AnimeListViewModel::class.java)) {
             return AnimeListViewModel(application) as T
+        }
+        if (modelClass.isAssignableFrom(HistoryViewModel::class.java)) {
+            return HistoryViewModel(application) as T
         }
         throw IllegalArgumentException("ViewModel class:: ${modelClass.name}")
     }
