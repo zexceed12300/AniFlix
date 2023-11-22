@@ -1,18 +1,13 @@
 package com.zexceed.aniflix.ui.search
 
-import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import com.zexceed.aniflix.R
 import com.zexceed.aniflix.adapter.SearchAdapter
 import com.zexceed.aniflix.databinding.ActivitySearchBinding
-import com.zexceed.aniflix.models.remote.response.search.SearchResult
 import com.zexceed.aniflix.respository.Resource
-import com.zexceed.aniflix.ui.home.HomeViewModel
 import com.zexceed.aniflix.utils.Constants.TAG
 import com.zexceed.aniflix.utils.ViewModelFactory
 

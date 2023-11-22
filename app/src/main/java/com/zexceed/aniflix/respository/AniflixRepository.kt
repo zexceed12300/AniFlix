@@ -101,4 +101,12 @@ class AniflixRepository(application: Application) {
     }.catch {
         emit(Resource.Error(it.message ?: ""))
     }.flowOn(Dispatchers.IO)
+
+    fun getAnimeByGenre(genreId: String, page: Int) = flow {
+        emit(Resource.Loading())
+        val response = ApiConfig(API_BASE_URL).apiServices.getAnimeByGenre(genreId, page)
+        emit(Resource.Success(response))
+    }.catch {
+        emit(Resource.Error(it.message ?: ""))
+    }.flowOn(Dispatchers.IO)
 }

@@ -2,7 +2,6 @@ package com.zexceed.aniflix.adapter
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,9 +9,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.zexceed.aniflix.databinding.ItemSearchBinding
+import com.zexceed.aniflix.models.remote.response.Genre
 import com.zexceed.aniflix.models.remote.response.search.SearchResult
 import com.zexceed.aniflix.ui.animedetail.AnimeDetailActivity
-import com.zexceed.aniflix.utils.Constants.TAG
+import com.zexceed.aniflix.ui.home.genre.GenreActivity
 import com.zexceed.aniflix.utils.Constants.createImageProgress
 
 class SearchAdapter: ListAdapter<SearchResult, SearchAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -37,7 +37,14 @@ class SearchAdapter: ListAdapter<SearchResult, SearchAdapter.ViewHolder>(DIFF_CA
                     tvRating.text = data.score.toString()
                 }
 
-                val genreAdapter = GenreAdapter()
+                val genreAdapter = GenreAdapter(
+                    onClick = { data ->
+                        val intent = Intent(itemView.context, GenreActivity::class.java)
+                        intent.putExtra(GenreActivity.GENRE_TITLE, data.genre_title)
+                        intent.putExtra(GenreActivity.GENRE_ID, data.genre_id)
+                        itemView.context.startActivity(intent)
+                    }
+                )
                 genreAdapter.submitList(data.genre_list)
                 rvGenre.apply {
                     adapter = genreAdapter

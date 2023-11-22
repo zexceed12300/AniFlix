@@ -1,5 +1,6 @@
 package com.zexceed.aniflix.ui.animedetail
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ import com.zexceed.aniflix.models.local.room.MylistEntity
 import com.zexceed.aniflix.models.remote.response.Episode
 import com.zexceed.aniflix.models.remote.response.anime.AnimeResponse
 import com.zexceed.aniflix.respository.Resource
+import com.zexceed.aniflix.ui.home.genre.GenreActivity
 import com.zexceed.aniflix.utils.Constants.TAG
 import com.zexceed.aniflix.utils.ViewModelFactory
 import kotlinx.coroutines.launch
@@ -33,7 +35,14 @@ class AnimeDetailActivity : AppCompatActivity() {
 
         viewModel = obtainViewModel(this@AnimeDetailActivity)
 
-        genreAdapter = GenreAdapter()
+        genreAdapter = GenreAdapter(
+            onClick = { data ->
+                val intent = Intent(this@AnimeDetailActivity, GenreActivity::class.java)
+                intent.putExtra(GenreActivity.GENRE_TITLE, data.genre_title)
+                intent.putExtra(GenreActivity.GENRE_ID, data.genre_id)
+                startActivity(intent)
+            }
+        )
 
         binding.apply {
 

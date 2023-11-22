@@ -4,6 +4,7 @@ import com.zexceed.aniflix.models.remote.response.anime.AnimeResponse
 import com.zexceed.aniflix.models.remote.response.complete.CompleteResponse
 import com.zexceed.aniflix.models.remote.response.episode.EpisodeResponse
 import com.zexceed.aniflix.models.remote.response.genre.GenreResponse
+import com.zexceed.aniflix.models.remote.response.genres.GenresResponse
 import com.zexceed.aniflix.models.remote.response.home.HomeResponse
 import com.zexceed.aniflix.models.remote.response.ongoing.OngoingResponse
 import com.zexceed.aniflix.models.remote.response.search.SearchResponse
@@ -40,5 +41,11 @@ interface ApiServices {
     ) : EpisodeResponse
 
     @GET("genres")
-    suspend fun getGenre() : GenreResponse
+    suspend fun getGenre() : GenresResponse
+
+    @GET("genres/{genreId}/page/{page}")
+    suspend fun getAnimeByGenre(
+        @Path("genreId") genreId: String,
+        @Path("page") page: Int
+    ) : GenreResponse
 }

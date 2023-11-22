@@ -9,6 +9,7 @@ import com.zexceed.aniflix.ui.animelist.AnimeListViewModel
 import com.zexceed.aniflix.ui.history.HistoryViewModel
 import com.zexceed.aniflix.ui.home.HomeViewModel
 import com.zexceed.aniflix.ui.home.complete.CompleteViewModel
+import com.zexceed.aniflix.ui.home.genre.GenreViewModel
 import com.zexceed.aniflix.ui.home.ongoing.OngoingFragment
 import com.zexceed.aniflix.ui.home.ongoing.OngoingViewModel
 import com.zexceed.aniflix.ui.search.SearchViewModel
@@ -59,6 +60,9 @@ class ViewModelFactory private constructor(
         }
         if (modelClass.isAssignableFrom(HistoryViewModel::class.java)) {
             return HistoryViewModel(application) as T
+        }
+        if (modelClass.isAssignableFrom(GenreViewModel::class.java)) {
+            return GenreViewModel(application) as T
         }
         throw IllegalArgumentException("ViewModel class:: ${modelClass.name}")
     }

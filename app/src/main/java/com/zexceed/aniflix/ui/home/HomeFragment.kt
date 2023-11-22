@@ -19,6 +19,9 @@ import com.zexceed.aniflix.databinding.FragmentHomeBinding
 import com.zexceed.aniflix.models.remote.response.home.Complete
 import com.zexceed.aniflix.models.remote.response.home.OnGoing
 import com.zexceed.aniflix.respository.Resource
+import com.zexceed.aniflix.ui.home.genre.GenreActivity
+import com.zexceed.aniflix.ui.home.genre.GenreActivity.Companion.GENRE_ID
+import com.zexceed.aniflix.ui.home.genre.GenreActivity.Companion.GENRE_TITLE
 import com.zexceed.aniflix.ui.search.SearchActivity
 import com.zexceed.aniflix.utils.Constants.TAG
 import com.zexceed.aniflix.utils.ViewModelFactory
@@ -53,7 +56,14 @@ class HomeFragment : Fragment() {
         viewModel = obtainViewModel(requireActivity())
         ongoingAdapter = HomeOngoingAdapter()
         completeAdapter = HomeCompleteAdapter()
-        genreAdapter = GenreAdapter()
+        genreAdapter = GenreAdapter(
+            onClick = { data ->
+                val intent = Intent(requireActivity(), GenreActivity::class.java)
+                intent.putExtra(GENRE_TITLE, data.genre_title)
+                intent.putExtra(GENRE_ID, data.genre_id)
+                startActivity(intent)
+            }
+        )
 
         binding.apply {
 

@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zexceed.aniflix.databinding.ItemGenreBinding
 import com.zexceed.aniflix.models.remote.response.Genre
 
-class GenreAdapter: ListAdapter<Genre, GenreAdapter.ViewHolder>(DIFF_CALLBACK) {
+class GenreAdapter(
+    private val onClick: (data: Genre) -> Unit
+): ListAdapter<Genre, GenreAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemGenreBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,6 +26,9 @@ class GenreAdapter: ListAdapter<Genre, GenreAdapter.ViewHolder>(DIFF_CALLBACK) {
         fun bind(data: Genre) {
             binding.apply {
                 chip.text = data.genre_title
+                chip.setOnClickListener {
+                    onClick(data)
+                }
             }
         }
     }

@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.zexceed.aniflix.models.remote.response.genre.GenreResponse
+import com.zexceed.aniflix.models.remote.response.genres.GenresResponse
 import com.zexceed.aniflix.models.remote.response.home.HomeResponse
 import com.zexceed.aniflix.respository.AniflixRepository
 import com.zexceed.aniflix.respository.Resource
@@ -18,7 +18,7 @@ class HomeViewModel(
     private lateinit var _home: LiveData<Resource<HomeResponse>>
     val home get() = _home
 
-    private lateinit var _genre: LiveData<Resource<GenreResponse>>
+    private lateinit var _genre: LiveData<Resource<GenresResponse>>
     val genre get() = _genre
 
     init {
