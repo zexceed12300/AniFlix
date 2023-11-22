@@ -48,8 +48,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="On-going"
-                android:textColor="@color/primary"
-                android:textSize="20sp"
+                android:textColor="?attr/colorAccent"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/searchBar"
                 app:layout_constraintTop_toBottomOf="@+id/rv_genre" />
@@ -72,8 +72,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="Completed"
-            android:textColor="@color/primary"
-            android:textSize="20sp"
+            android:textColor="?attr/colorAccent"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/rv_ongoing" />
