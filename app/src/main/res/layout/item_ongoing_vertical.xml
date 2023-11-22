@@ -25,7 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="160dp"
             app:cardCornerRadius="28dp"
-            android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             app:layout_constraintTop_toTopOf="parent">
@@ -38,11 +37,6 @@
                 tools:layout_editor_absoluteX="129dp"
                 tools:layout_editor_absoluteY="2dp"
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/thumbnail_gradient" />
 
         </androidx.cardview.widget.CardView>
 
@@ -63,9 +57,9 @@
             android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:textSize="11sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/tv_day_updated"
             app:layout_constraintTop_toBottomOf="@+id/tv_day_updated"
             tools:text="@tools:sample/lorem/random" />
@@ -74,12 +68,10 @@
             android:id="@+id/tv_uploaded_on"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title"
             tools:text="@tools:sample/lorem" />
 
 

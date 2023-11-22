@@ -25,7 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="160dp"
             app:cardCornerRadius="28dp"
-            android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             app:layout_constraintTop_toTopOf="parent">
@@ -38,11 +37,6 @@
                 tools:layout_editor_absoluteX="129dp"
                 tools:layout_editor_absoluteY="2dp"
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/thumbnail_gradient" />
 
         </androidx.cardview.widget.CardView>
 
