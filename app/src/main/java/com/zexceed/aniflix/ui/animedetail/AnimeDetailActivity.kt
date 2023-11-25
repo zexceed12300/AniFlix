@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.webkit.WebViewClient
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -98,7 +99,11 @@ class AnimeDetailActivity : AppCompatActivity() {
                         )
 
                         setGenreList(result)
-                        tvSynopsis.text = result.data.synopsis
+                        if (result.data.synopsis.isNullOrEmpty()) {
+                            chipSynopsisError?.visibility = View.VISIBLE
+                        } else {
+                            tvSynopsis.text = result.data.synopsis
+                        }
 
                         setMyList(result)
                     }
