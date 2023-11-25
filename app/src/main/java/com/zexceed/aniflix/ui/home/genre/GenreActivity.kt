@@ -2,6 +2,7 @@ package com.zexceed.aniflix.ui.home.genre
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.zexceed.aniflix.adapter.AnimeGenreAdapter
 import com.zexceed.aniflix.databinding.ActivityGenreBinding
@@ -34,7 +35,7 @@ class GenreActivity : AppCompatActivity() {
             viewModel.anime.observe(this@GenreActivity) { result ->
                 when(result) {
                     is Resource.Loading -> {
-
+                        progressBar.visibility = View.VISIBLE
                     }
                     is Resource.Success -> {
                         mAdapter.submitList(result.data.animeList)
@@ -42,6 +43,7 @@ class GenreActivity : AppCompatActivity() {
                             adapter = mAdapter
                             setHasFixedSize(true)
                         }
+                        progressBar.visibility = View.GONE
                     }
                     is Resource.Error -> {
 
