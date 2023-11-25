@@ -3,15 +3,14 @@ package com.zexceed.aniflix.utils
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.zexceed.aniflix.respository.AniflixRepository
 import com.zexceed.aniflix.ui.animedetail.AnimeDetailViewModel
 import com.zexceed.aniflix.ui.animelist.AnimeListViewModel
 import com.zexceed.aniflix.ui.history.HistoryViewModel
 import com.zexceed.aniflix.ui.home.HomeViewModel
 import com.zexceed.aniflix.ui.home.complete.CompleteViewModel
 import com.zexceed.aniflix.ui.home.genre.GenreViewModel
-import com.zexceed.aniflix.ui.home.ongoing.OngoingFragment
 import com.zexceed.aniflix.ui.home.ongoing.OngoingViewModel
+import com.zexceed.aniflix.ui.home.schedule.ScheduleViewModel
 import com.zexceed.aniflix.ui.search.SearchViewModel
 import java.lang.IllegalArgumentException
 
@@ -63,6 +62,9 @@ class ViewModelFactory private constructor(
         }
         if (modelClass.isAssignableFrom(GenreViewModel::class.java)) {
             return GenreViewModel(application) as T
+        }
+        if (modelClass.isAssignableFrom(ScheduleViewModel::class.java)) {
+            return ScheduleViewModel(application) as T
         }
         throw IllegalArgumentException("ViewModel class:: ${modelClass.name}")
     }

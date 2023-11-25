@@ -7,6 +7,7 @@ import com.zexceed.aniflix.models.remote.response.genre.GenreResponse
 import com.zexceed.aniflix.models.remote.response.genres.GenresResponse
 import com.zexceed.aniflix.models.remote.response.home.HomeResponse
 import com.zexceed.aniflix.models.remote.response.ongoing.OngoingResponse
+import com.zexceed.aniflix.models.remote.response.schedule.ScheduleResponse
 import com.zexceed.aniflix.models.remote.response.search.SearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -48,4 +49,7 @@ interface ApiServices {
         @Path("genreId") genreId: String,
         @Path("page") page: Int
     ) : GenreResponse
+
+    @GET("schedule")
+    suspend fun getSchedule() : ScheduleResponse
 }
