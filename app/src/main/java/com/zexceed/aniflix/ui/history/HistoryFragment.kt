@@ -1,5 +1,6 @@
 package com.zexceed.aniflix.ui.history
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,11 +9,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zexceed.aniflix.adapter.HistoryAdapter
+import com.zexceed.aniflix.databinding.DialogConfirmationBinding
 import com.zexceed.aniflix.databinding.FragmentHistoryBinding
 import com.zexceed.aniflix.ui.animelist.AnimeListViewModel
 import com.zexceed.aniflix.utils.Constants.TAG
 import com.zexceed.aniflix.utils.ViewModelFactory
+import kotlinx.coroutines.launch
 import java.util.Collections
 
 class HistoryFragment : Fragment() {
@@ -42,12 +47,48 @@ class HistoryFragment : Fragment() {
         mAdapter = HistoryAdapter()
 
         binding.apply {
+
+            setList()
+
+            btnClearHistory.setOnClickListener {
+                clearHistory()
+            }
+        }
+    }
+
+    private fun setList() {
+        binding.apply {
             viewModel.getAllHistory().observe(viewLifecycleOwner) { result ->
                 Collections.reverse(result)
                 mAdapter.submitList(result)
                 rvHistory.apply {
                     adapter = mAdapter
                     setHasFixedSize(true)
+                }
+            }
+        }
+    }
+
+    private fun clearHistory() {
+        val dialogBinding = DialogConfirmationBinding.inflate(LayoutInflater.from(requireActivity()))
+        val dialogBuilder = AlertDialog.Builder(requireActivity())
+        dialogBuilder.setView(dialogBinding.root)
+        val dialog = dialogBuilder.create()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.show()
+        dialogBinding.apply {
+
+            tvMessage.text = "Yakin menghapus semua history tontonan?"
+
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            btnOkay.setOnClickListener {
+                lifecycleScope.launch {
+                    viewModel.deleteAllHistory()
+                    setList()
+                    dialog.dismiss()
                 }
             }
         }

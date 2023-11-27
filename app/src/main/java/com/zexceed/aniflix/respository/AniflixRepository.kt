@@ -46,6 +46,10 @@ class AniflixRepository(application: Application) {
         mHistoryDao.deleteHistoryById(animeId)
     }
 
+    suspend fun deleteAllHistory() {
+        mHistoryDao.deleteAllHistory()
+    }
+
     fun getHome() = flow {
         emit(Resource.Loading())
         val response = ApiConfig(API_BASE_URL).apiServices.getHome()

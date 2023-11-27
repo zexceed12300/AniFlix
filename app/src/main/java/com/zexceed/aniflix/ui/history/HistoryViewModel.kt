@@ -16,4 +16,8 @@ class HistoryViewModel(
         return mRepository.getAllHistory()
     }
 
+    suspend fun deleteAllHistory() {
+        mRepository.deleteAllHistory()
+    }
+
 }

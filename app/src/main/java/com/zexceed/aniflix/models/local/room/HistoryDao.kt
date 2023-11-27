@@ -19,4 +19,7 @@ interface HistoryDao {
 
     @Query("DELETE FROM History WHERE animeId = :animeId")
     suspend fun deleteHistoryById(animeId: String)
+
+    @Query("DELETE FROM History")
+    suspend fun deleteAllHistory()
 }
