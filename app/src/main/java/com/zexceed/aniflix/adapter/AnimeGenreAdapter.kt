@@ -38,7 +38,7 @@ class AnimeGenreAdapter: ListAdapter<Anime, AnimeGenreAdapter.ViewHolder>(DIFF_C
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, AnimeDetailActivity::class.java)
-                    intent.putExtra(AnimeDetailActivity.ANIME_DETAIL_ID, data.)
+                    intent.putExtra(AnimeDetailActivity.ANIME_DETAIL_ID, data.id)
                     itemView.context.startActivity(intent)
                 }
             }
