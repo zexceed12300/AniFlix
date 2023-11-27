@@ -3,6 +3,7 @@ package com.zexceed.aniflix.ui.search
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.zexceed.aniflix.adapter.SearchAdapter
@@ -42,22 +43,29 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun setList() {
-        viewModel.searchResult.observe(this@SearchActivity) { result ->
-            when(result) {
-                is Resource.Loading -> {
-
-                }
-
-                is Resource.Success -> {
-                    mAdapter.submitList(result.data.search_results)
-                    binding.rvSearchResult.apply {
-                        adapter = mAdapter
-                        setHasFixedSize(true)
+        binding.apply {
+            viewModel.searchResult.observe(this@SearchActivity) { result ->
+                when(result) {
+                    is Resource.Loading -> {
+                        chipError.visibility = View.GONE
+                        progressBar.visibility = View.VISIBLE
                     }
-                }
 
-                is Resource.Error -> {
-                    Log.d(TAG, "setList: ${result.error}")
+                    is Resource.Success -> {
+                        mAdapter.submitList(result.data.search_results)
+                        binding.rvSearchResult.apply {
+                            adapter = mAdapter
+                            setHasFixedSize(true)
+                        }
+                        if (result.data.search_results.isNullOrEmpty()) {
+                            chipError.visibility = View.VISIBLE
+                        }
+                        progressBar.visibility = View.GONE
+                    }
+
+                    is Resource.Error -> {
+
+                    }
                 }
             }
         }
