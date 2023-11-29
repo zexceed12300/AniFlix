@@ -2,14 +2,23 @@ package com.zexceed.aniflix.respository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.zexceed.aniflix.BuildConfig.API_BASE_URL
 import com.zexceed.aniflix.apiservices.ApiConfig
-import com.zexceed.aniflix.models.local.room.MylistDao
 import com.zexceed.aniflix.models.local.room.AniflixDatabase
 import com.zexceed.aniflix.models.local.room.HistoryDao
 import com.zexceed.aniflix.models.local.room.HistoryEntity
+import com.zexceed.aniflix.models.local.room.MylistDao
 import com.zexceed.aniflix.models.local.room.MylistEntity
+import com.zexceed.aniflix.models.remote.response.genre.Anime
+import com.zexceed.aniflix.paging.AnimeByGenrePagingSource
+import com.zexceed.aniflix.paging.AnimeByGenrePagingSource.Companion.PAGE_SIZE
+import com.zexceed.aniflix.paging.AnimeByGenrePagingSource.Companion.PREFETCH_DISTANCE
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -113,6 +122,12 @@ class AniflixRepository(application: Application) {
     }.catch {
         emit(Resource.Error(it.message ?: ""))
     }.flowOn(Dispatchers.IO)
+
+    fun getAnimeByGenrePaging(genreId: String) =
+        Pager(
+            config = PagingConfig(pageSize = PAGE_SIZE, prefetchDistance = PREFETCH_DISTANCE),
+            pagingSourceFactory = { AnimeByGenrePagingSource(genreId) }
+        ).liveData
 
     fun getSchedule() = flow {
         emit(Resource.Loading())
