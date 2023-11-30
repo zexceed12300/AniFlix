@@ -23,10 +23,6 @@ class AnimeDetailViewModel(
     private lateinit var _episode: LiveData<Resource<EpisodeResponse>>
     val episode get() = _episode
 
-    init {
-        getAnime("")
-    }
-
     fun getAnime(id: String) {
         _anime = mRepository.getAnime(id).asLiveData()
     }
