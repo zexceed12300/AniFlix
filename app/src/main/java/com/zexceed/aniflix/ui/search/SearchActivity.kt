@@ -47,6 +47,7 @@ class SearchActivity : AppCompatActivity() {
             viewModel.searchResult.observe(this@SearchActivity) { result ->
                 when(result) {
                     is Resource.Loading -> {
+                        mAdapter.submitList(null)
                         chipError.visibility = View.GONE
                         progressBar.visibility = View.VISIBLE
                     }
