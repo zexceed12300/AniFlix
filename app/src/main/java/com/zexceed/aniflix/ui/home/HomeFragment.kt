@@ -83,6 +83,14 @@ class HomeFragment : Fragment() {
             btnAllComplete.setOnClickListener {
                 findNavController().navigate(R.id.action_navigation_home_to_completeFragment)
             }
+
+            btnRefresh.setOnClickListener {
+                viewModel.getHome()
+                viewModel.getGenre()
+                setList()
+                setGenre()
+            }
+
         }
     }
 
@@ -91,9 +99,13 @@ class HomeFragment : Fragment() {
             viewModel.genre.observe(viewLifecycleOwner) { result ->
                 when(result) {
                     is Resource.Loading -> {
-
+                        content.isVisible = true
+                        layoutError.isVisible = false
+                        shimmerGenre.isVisible = true
                     }
                     is Resource.Success -> {
+                        layoutError.isVisible = false
+                        shimmerGenre.isVisible = false
                         genreAdapter.submitList(result.data.genreList)
                         rvGenre.apply {
                             adapter = genreAdapter
@@ -101,7 +113,9 @@ class HomeFragment : Fragment() {
                         }
                     }
                     is Resource.Error -> {
-
+                        shimmerGenre.isVisible = false
+                        content.isVisible = false
+                        layoutError.isVisible = true
                     }
                 }
             }
@@ -109,32 +123,43 @@ class HomeFragment : Fragment() {
     }
 
     private fun setList() {
-        viewModel.home.observe(viewLifecycleOwner) { result ->
-            when(result) {
-                is Resource.Loading -> {
-                    binding.progressBar.isVisible = true
-                }
-
-                is Resource.Success -> {
-                    binding.progressBar.isVisible = false
-                    listOngoing = result.data.home.on_going
-                    listCompleted = result.data.home.complete
-
-                    ongoingAdapter.submitList(listOngoing)
-                    binding.rvOngoing.apply {
-                        adapter = ongoingAdapter
-                        setHasFixedSize(true)
+        binding.apply {
+            viewModel.home.observe(viewLifecycleOwner) { result ->
+                when(result) {
+                    is Resource.Loading -> {
+                        content.isVisible = true
+                        layoutError.isVisible = false
+                        shimmerOngoing.isVisible = true
+                        shimmerComplete.isVisible = true
                     }
-                    completeAdapter.submitList(listCompleted)
-                    binding.rvComplete.apply {
-                        adapter = completeAdapter
-                        setHasFixedSize(true)
-                    }
-                }
 
-                is Resource.Error -> {
-                    binding.progressBar.isVisible = false
-                    Log.d(TAG, "setList::::::: ${result.error}")
+                    is Resource.Success -> {
+                        listOngoing = result.data.home.on_going
+                        listCompleted = result.data.home.complete
+
+                        content.isVisible = true
+                        layoutError.isVisible = false
+                        shimmerOngoing.isVisible = false
+                        shimmerComplete.isVisible = false
+
+                        ongoingAdapter.submitList(listOngoing)
+                        binding.rvOngoing.apply {
+                            adapter = ongoingAdapter
+                            setHasFixedSize(true)
+                        }
+                        completeAdapter.submitList(listCompleted)
+                        binding.rvComplete.apply {
+                            adapter = completeAdapter
+                            setHasFixedSize(true)
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        shimmerOngoing.isVisible = false
+                        shimmerComplete.isVisible = false
+                        content.isVisible = false
+                        layoutError.isVisible = true
+                    }
                 }
             }
         }

@@ -7,6 +7,7 @@
     tools:context=".ui.home.HomeFragment">
 
     <ScrollView
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,6 +29,37 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView6"
                 tools:listitem="@layout/item_genre" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_genre"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:paddingHorizontal="8dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp">
+
+                        <include layout="@layout/item_genre_placeholder" />
+                        <include layout="@layout/item_genre_placeholder" />
+                        <include layout="@layout/item_genre_placeholder" />
+                        <include layout="@layout/item_genre_placeholder" />
+                        <include layout="@layout/item_genre_placeholder" />
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
             <com.google.android.material.search.SearchBar
                 android:id="@+id/searchBar"
@@ -54,6 +86,35 @@
                 app:layout_constraintStart_toStartOf="@+id/searchBar"
                 app:layout_constraintTop_toBottomOf="@+id/rv_genre" />
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_ongoing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                android:layout_marginTop="24dp">
+                
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+                    
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="180dp">
+
+                        <include layout="@layout/item_horizontal_placeholder" />
+                        <include layout="@layout/item_horizontal_placeholder" />
+                        <include layout="@layout/item_horizontal_placeholder" />
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_ongoing"
                 android:layout_width="match_parent"
@@ -67,17 +128,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView"
                 tools:listitem="@layout/item_ongoing_horizontal" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Completed"
-            android:textColor="?attr/colorAccent"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/rv_ongoing" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Completed"
+                android:textColor="?attr/colorAccent"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/rv_ongoing" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_complete"
@@ -92,15 +153,36 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView3"
                 tools:listitem="@layout/item_ongoing_horizontal" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="24dp"
+                android:paddingHorizontal="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="180dp">
+
+                        <include layout="@layout/item_horizontal_placeholder" />
+
+                        <include layout="@layout/item_horizontal_placeholder" />
+
+                        <include layout="@layout/item_horizontal_placeholder" />
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_all_ongoing"
@@ -143,5 +225,35 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/layout_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Could not load page!"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Refresh" />
+
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

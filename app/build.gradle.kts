@@ -79,6 +79,9 @@ dependencies {
     // Paging 3.0
     implementation("androidx.paging:paging-runtime-ktx:3.2.1")
 
+    // Shimmer
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
