@@ -6,9 +6,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zexceed.aniflix.adapter.AnimeGenreAdapter
 import com.zexceed.aniflix.adapter.AnimeGenrePagingAdapter
+import com.zexceed.aniflix.adapter.AnimeLoadStateAdapter
 import com.zexceed.aniflix.databinding.ActivityGenreBinding
 import com.zexceed.aniflix.respository.Resource
 import com.zexceed.aniflix.utils.Constants.TAG
@@ -60,9 +62,25 @@ class GenreActivity : AppCompatActivity() {
 //                }
 //            }
 
+            val footerAdapter = AnimeLoadStateAdapter {
+                mPagingAdapter.retry()
+            }
+            val layoutManager = GridLayoutManager(this@GenreActivity, 3)
             rvGenres.apply {
                 setHasFixedSize(true)
-                adapter = mPagingAdapter
+                adapter = mPagingAdapter.withLoadStateFooter(
+                    footer = footerAdapter
+                )
+                rvGenres.layoutManager = layoutManager
+            }
+            layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (position == mPagingAdapter.itemCount && footerAdapter.itemCount > 0) {
+                        3
+                    } else {
+                        1
+                    }
+                }
             }
 
             viewModel.getAnimeByGenrePaging(intent.getStringExtra(GENRE_ID).toString())
