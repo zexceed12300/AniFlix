@@ -1,21 +1,14 @@
 package com.zexceed.aniflix.ui.home.genre
 
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.zexceed.aniflix.adapter.AnimeGenreAdapter
 import com.zexceed.aniflix.adapter.AnimeGenrePagingAdapter
 import com.zexceed.aniflix.adapter.AnimeLoadStateAdapter
 import com.zexceed.aniflix.databinding.ActivityGenreBinding
-import com.zexceed.aniflix.respository.Resource
-import com.zexceed.aniflix.utils.Constants.TAG
 import com.zexceed.aniflix.utils.ViewModelFactory
-import kotlinx.coroutines.launch
 
 class GenreActivity : AppCompatActivity() {
 
@@ -42,26 +35,6 @@ class GenreActivity : AppCompatActivity() {
 
             tvGenreTitle.text = intent.getStringExtra(GENRE_TITLE)
 
-//            viewModel.getAnimeByGenre(intent.getStringExtra(GENRE_ID).toString(), 1)
-//            viewModel.anime.observe(this@GenreActivity) { result ->
-//                when(result) {
-//                    is Resource.Loading -> {
-//                        progressBar.visibility = View.VISIBLE
-//                    }
-//                    is Resource.Success -> {
-//                        mAdapter.submitList(result.data.animeList)
-//                        rvGenres.apply {
-//                            adapter = mAdapter
-//                            setHasFixedSize(true)
-//                        }
-//                        progressBar.visibility = View.GONE
-//                    }
-//                    is Resource.Error -> {
-//
-//                    }
-//                }
-//            }
-
             val footerAdapter = AnimeLoadStateAdapter {
                 mPagingAdapter.retry()
             }
@@ -84,30 +57,9 @@ class GenreActivity : AppCompatActivity() {
             }
 
             viewModel.getAnimeByGenrePaging(intent.getStringExtra(GENRE_ID).toString())
-            viewModel.animeList.observe(this@GenreActivity) { result ->
+            viewModel.anime.observe(this@GenreActivity) { result ->
                 mPagingAdapter.submitData(lifecycle, result)
             }
-//            viewModel.animeList.observe(this@GenreActivity) { result ->
-//                when(result) {
-//                    is Resource.Loading -> {
-//                        progressBar.visibility = View.VISIBLE
-//                    }
-//                    is Resource.Success -> {
-//                        Log.d(TAG, "onCreate: ${result.data}")
-//                        lifecycleScope.launch {
-//                            mPagingAdapter.submitData(result.data)
-//                        }
-//                        rvGenres.apply {
-//                            adapter = mPagingAdapter
-//                            setHasFixedSize(true)
-//                        }
-//                        progressBar.visibility = View.GONE
-//                    }
-//                    is Resource.Error -> {
-//                        Log.d(TAG, "onCreate: ${result.error}")
-//                    }
-//                }
-//            }
         }
     }
 
