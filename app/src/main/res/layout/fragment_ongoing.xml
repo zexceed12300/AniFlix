@@ -57,5 +57,4 @@
         app:spanCount="3"
         tools:listitem="@layout/item_ongoing_vertical" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>

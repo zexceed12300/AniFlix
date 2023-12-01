@@ -6,13 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.zexceed.aniflix.R
-import com.zexceed.aniflix.adapter.OngoingAdapter
+import com.zexceed.aniflix.adapter.AnimeLoadStateAdapter
+import com.zexceed.aniflix.adapter.OngoingPagingAdapter
 import com.zexceed.aniflix.databinding.FragmentOngoingBinding
 import com.zexceed.aniflix.respository.Resource
-import com.zexceed.aniflix.ui.home.HomeViewModel
 import com.zexceed.aniflix.utils.ViewModelFactory
 
 class OngoingFragment : Fragment() {
@@ -20,7 +22,7 @@ class OngoingFragment : Fragment() {
     private var _binding: FragmentOngoingBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: OngoingViewModel
-    private lateinit var mAdapter: OngoingAdapter
+    private lateinit var mAdapter: OngoingPagingAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +38,7 @@ class OngoingFragment : Fragment() {
 
         viewModel = obtainViewModel(requireActivity())
 
-        mAdapter = OngoingAdapter()
+        mAdapter = OngoingPagingAdapter()
 
         binding.apply {
             setList()
@@ -49,22 +51,30 @@ class OngoingFragment : Fragment() {
     }
 
     private fun setList() {
-        viewModel.getOngoing(1)
-        viewModel.ongoing.observe(viewLifecycleOwner) { result ->
-            when(result) {
-                is Resource.Loading -> {
-
-                }
-                is Resource.Success -> {
-                    mAdapter.submitList(result.data.animeList)
-                    binding.rvOngoing.apply {
-                        adapter = mAdapter
-                        setHasFixedSize(true)
+        binding.apply {
+            val footerAdapter = AnimeLoadStateAdapter {
+                mAdapter.retry()
+            }
+            val layoutManager = GridLayoutManager(requireActivity(), 3)
+            rvOngoing.apply {
+                setHasFixedSize(true)
+                adapter = mAdapter.withLoadStateFooter(
+                    footer = footerAdapter
+                )
+                rvOngoing.layoutManager = layoutManager
+            }
+            layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (position == mAdapter.itemCount && footerAdapter.itemCount > 0) {
+                        3
+                    } else {
+                        1
                     }
                 }
-                is Resource.Error -> {
+            }
 
-                }
+            viewModel.ongoing.observe(viewLifecycleOwner) { result ->
+                mAdapter.submitData(lifecycle, result)
             }
         }
     }

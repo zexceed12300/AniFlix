@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +14,7 @@ import com.zexceed.aniflix.models.remote.response.ongoing.Anime
 import com.zexceed.aniflix.ui.animedetail.AnimeDetailActivity
 import com.zexceed.aniflix.utils.Constants.createImageProgress
 
-class OngoingAdapter: ListAdapter<Anime, OngoingAdapter.ViewHolder>(DIFF_CALLBACK) {
+class OngoingPagingAdapter: PagingDataAdapter<Anime, OngoingPagingAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemOngoingVerticalBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,7 +22,10 @@ class OngoingAdapter: ListAdapter<Anime, OngoingAdapter.ViewHolder>(DIFF_CALLBAC
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val data = getItem(position)
+        if (data != null) {
+            holder.bind(data)
+        }
     }
 
     inner class ViewHolder(private val binding: ItemOngoingVerticalBinding) : RecyclerView.ViewHolder(binding.root) {
