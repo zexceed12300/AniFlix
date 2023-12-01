@@ -1,10 +1,13 @@
 package com.zexceed.aniflix.ui.animedetail
 
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebViewClient
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -52,7 +55,7 @@ class AnimeDetailActivity : AppCompatActivity() {
                     tvTitle.text = data.title
 
                     viewModel.getEpisode(data.id)
-                    setMediaPlayer()
+                    setMediaPlayer(savedInstanceState)
                     setHistory(
                         intent.getStringExtra(ANIME_DETAIL_ID).toString(),
                         null,
@@ -63,11 +66,40 @@ class AnimeDetailActivity : AppCompatActivity() {
             )
 
             viewModel.getAnime(intent.getStringExtra(ANIME_DETAIL_ID).toString())
-            setAnimeView()
+            setAnimeView(savedInstanceState)
         }
     }
 
-    private fun setAnimeView() {
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        binding.apply {
+            val params = videoContainer.layoutParams
+
+            if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                params.height = ViewGroup.LayoutParams.MATCH_PARENT
+            } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                params.height = resources.displayMetrics.heightPixels / 4
+            }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        binding.videoContainer.restoreState(outState)
+    }
+
+    override fun onRestoreInstanceState(
+        savedInstanceState: Bundle?,
+        persistentState: PersistableBundle?
+    ) {
+        super.onRestoreInstanceState(savedInstanceState, persistentState)
+        if (savedInstanceState != null) {
+            binding.videoContainer.restoreState(savedInstanceState)
+        }
+    }
+
+    private fun setAnimeView(savedInstanceState: Bundle?) {
         binding.apply {
             viewModel.anime.observe(this@AnimeDetailActivity) { result ->
                 when(result) {
@@ -97,7 +129,7 @@ class AnimeDetailActivity : AppCompatActivity() {
 
                         setEpisodeList(listEpisode)
 
-                        setMediaPlayer()
+                        setMediaPlayer(savedInstanceState)
 
                         setHistory(
                             result.data.anime_id,
@@ -200,7 +232,7 @@ class AnimeDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setMediaPlayer() {
+    private fun setMediaPlayer(savedInstanceState: Bundle?) {
         binding.apply {
             viewModel.episode.observe(this@AnimeDetailActivity) { result ->
                 when(result) {
@@ -208,9 +240,11 @@ class AnimeDetailActivity : AppCompatActivity() {
 
                     }
                     is Resource.Success -> {
-                        videoContainer.webViewClient = WebViewClient()
-                        videoContainer.settings.javaScriptEnabled = true
-                        videoContainer.loadUrl(result.data.link_stream)
+                        if (savedInstanceState == null) {
+                            videoContainer.webViewClient = WebViewClient()
+                            videoContainer.settings.javaScriptEnabled = true
+                            videoContainer.loadUrl(result.data.link_stream)
+                        }
                     }
                     is Resource.Error -> {
 
