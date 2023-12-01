@@ -13,6 +13,7 @@ import com.zexceed.aniflix.models.local.room.HistoryEntity
 import com.zexceed.aniflix.models.local.room.MylistDao
 import com.zexceed.aniflix.models.local.room.MylistEntity
 import com.zexceed.aniflix.paging.AnimeByGenrePagingSource
+import com.zexceed.aniflix.paging.CompletePagingSource
 import com.zexceed.aniflix.paging.OngoingPagingSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -77,13 +78,11 @@ class AniflixRepository(application: Application) {
             pagingSourceFactory = { OngoingPagingSource() }
         ).liveData
 
-    fun getComplete(page: Int) = flow {
-        emit(Resource.Loading())
-        val response = ApiConfig(API_BASE_URL).apiServices.getComplete(page)
-        emit(Resource.Success(response))
-    }.catch {
-        emit(Resource.Error(it.message ?: ""))
-    }.flowOn(Dispatchers.IO)
+    fun getComplete() =
+        Pager(
+            config = PagingConfig(pageSize = CompletePagingSource.PAGE_SIZE, prefetchDistance = CompletePagingSource.PREFETCH_DISTANCE),
+            pagingSourceFactory = { CompletePagingSource() }
+        ).liveData
 
     fun getAnime(id: String) = flow {
         emit(Resource.Loading())
