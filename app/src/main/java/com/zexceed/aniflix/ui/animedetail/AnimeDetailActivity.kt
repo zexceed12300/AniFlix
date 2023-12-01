@@ -50,6 +50,7 @@ class AnimeDetailActivity : AppCompatActivity() {
             episodeAdapter = EpisodeAdapter(
                 onClick = { data, position ->
                     tvTitle.text = data.title
+
                     viewModel.getEpisode(data.id)
                     setMediaPlayer()
                     setHistory(
@@ -74,6 +75,7 @@ class AnimeDetailActivity : AppCompatActivity() {
 
                     }
                     is Resource.Success -> {
+
                         tvStatus.text = result.data.status
                         if (result.data.score.toString() == "null") {
                             tvRating.text = "N/A"
@@ -81,12 +83,18 @@ class AnimeDetailActivity : AppCompatActivity() {
                             tvRating.text = result.data.score.toString()
                         }
 
-                        val listEpisode = result.data.episode_list
-                        Collections.reverse(listEpisode)
+                        val listEpisode = result.data.episode_list.asReversed()
+                        var currentEps = listEpisode[0]
+                        if (viewModel.episodeId.value.isNullOrEmpty()) {
+                            viewModel.getEpisode(listEpisode[0].id)
+                        } else {
+                            currentEps = listEpisode.find {
+                                it.id == viewModel.episodeId.value
+                            } ?: listEpisode[0]
+                        }
 
-                        tvTitle.text = listEpisode[0].title
+                        tvTitle.text = currentEps?.title
 
-                        viewModel.getEpisode(listEpisode[0].id)
                         setEpisodeList(listEpisode)
 
                         setMediaPlayer()
