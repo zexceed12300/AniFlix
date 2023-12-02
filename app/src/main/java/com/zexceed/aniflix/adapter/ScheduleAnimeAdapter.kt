@@ -1,6 +1,7 @@
 package com.zexceed.aniflix.adapter
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.zexceed.aniflix.databinding.ItemScheduleAnimeBinding
 import com.zexceed.aniflix.models.remote.response.schedule.Anime
 import com.zexceed.aniflix.respository.Resource
+import com.zexceed.aniflix.ui.animedetail.AnimeDetailActivity
 import com.zexceed.aniflix.ui.home.schedule.ScheduleViewModel
 import com.zexceed.aniflix.utils.Constants.createImageProgress
 
@@ -50,6 +52,12 @@ class ScheduleAnimeAdapter(
 
                         }
                     }
+                }
+
+                itemView.setOnClickListener {
+                    val intent = Intent(itemView.context, AnimeDetailActivity::class.java)
+                    intent.putExtra(AnimeDetailActivity.ANIME_DETAIL_ID, data.id)
+                    itemView.context.startActivity(intent)
                 }
             }
         }
