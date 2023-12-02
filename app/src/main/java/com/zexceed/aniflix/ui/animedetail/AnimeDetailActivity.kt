@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.zexceed.aniflix.adapter.EpisodeAdapter
@@ -104,10 +105,12 @@ class AnimeDetailActivity : AppCompatActivity() {
             viewModel.anime.observe(this@AnimeDetailActivity) { result ->
                 when(result) {
                     is Resource.Loading -> {
-
+                        content?.isVisible = false
+                        shimmerContent?.isVisible = true
                     }
                     is Resource.Success -> {
-
+                        shimmerContent?.isVisible = false
+                        content?.isVisible = true
                         tvStatus.text = result.data.status
                         if (result.data.score.toString() == "null") {
                             tvRating.text = "N/A"
